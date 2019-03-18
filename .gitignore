@@ -1,4 +1,4 @@
-use_toolchain.sh
+tools.tar
 llvm
 llvm-build
 target

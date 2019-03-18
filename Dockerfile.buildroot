@@ -1,0 +1,10 @@
+FROM debian:stretch
+
+RUN apt update && \
+  apt upgrade -y && \
+  apt install -y build-essential \
+                 ninja-build \
+                 git \
+                 cmake \
+		 python
+CMD ["/bin/bash", "-c", "cd /opt/toolchain && ./mktoolchain.sh && tar -cvf tools.tar -C target ."]

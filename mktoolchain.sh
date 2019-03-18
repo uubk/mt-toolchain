@@ -80,7 +80,7 @@ cmake -DCMAKE_INSTALL_PREFIX="${TARGET}" \
 $MAKE install
 cd ..
 
-cat > "${ROOT}/use_toolchain.sh" << EOF
+cat > "${TARGET}/use_toolchain.sh" << EOF
 export PATH=${TARGET}/bin:\$PATH
 export CXXFLAGS="-I${TARGET}/include/c++/v1 -I${TARGET}/target/include -stdlib=libc++"
 export CFLAGS="-I${TARGET}/include"
@@ -91,5 +91,5 @@ export CXX=clang++
 export LD=ld.lld
 EOF
 
-echo "To use your new compiler, source ${ROOT}/use_toolchain.sh"
+echo "To use your new compiler, source ${TARGET}/use_toolchain.sh"
 # vim: set ts=4 sw=4 tw=80 et :
