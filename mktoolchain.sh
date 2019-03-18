@@ -82,7 +82,7 @@ cd ..
 
 cat > "${TARGET}/use_toolchain.sh" << EOF
 export PATH=${TARGET}/bin:\$PATH
-export CXXFLAGS="-I${TARGET}/include/c++/v1 -I${TARGET}/target/include -stdlib=libc++"
+export CXXFLAGS="-I${TARGET}/target/include"
 export CFLAGS="-I${TARGET}/include"
 export LDFLAGS="-L${TARGET}/lib"
 export LD_LIBRARY_PATH=${TARGET}/lib:$LD_LIBRARY_PATH

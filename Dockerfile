@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 
 RUN apt update && \
   apt upgrade -y && \
@@ -6,9 +6,11 @@ RUN apt update && \
                  ninja-build \
                  libboost-all-dev \
                  python \
-                 cmake \
                  git \
-                 neovim && \
+                 libgmp-dev \
+                 autoconf \
+                 neovim \
+                 cmake && \
   mkdir -p /opt/toolchain/target && \
   echo "source /opt/toolchain/target/use_toolchain.sh" >> /root/.bashrc
 ADD tools.tar /opt/toolchain/target
