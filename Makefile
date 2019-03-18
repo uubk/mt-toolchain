@@ -1,3 +1,5 @@
+all: buildroot build install
+
 buildroot:
 	docker build -t toolchain-build -f Dockerfile.buildroot .
 
@@ -6,5 +8,3 @@ build:
 
 install:
 	docker build -t compiler .
-
-all: buildroot build install

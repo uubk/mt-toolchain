@@ -72,7 +72,7 @@ mkdir llvm-build || /bin/true
 cd llvm-build
 
 cmake -DCMAKE_INSTALL_PREFIX="${TARGET}" \
-      -DLLVM_ENABLE_PROJECTS="libcxx;libcxxabi;clang;compiler-rt" \
+      -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" \
       -DLLVM_PARALLEL_LINK_JOBS="${MAX_LINK_JOBS}" \
       -G "${CMAKE_GENERATOR}" \
       -DCMAKE_BUILD_TYPE=Release \
