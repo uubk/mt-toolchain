@@ -10,6 +10,7 @@ RUN apt update && \
                  libgmp-dev \
                  autoconf \
                  neovim \
+		 openssh-client \
                  cmake && \
   mkdir -p /opt/toolchain/target && \
   echo "source /opt/toolchain/target/use_toolchain.sh" >> /root/.bashrc
