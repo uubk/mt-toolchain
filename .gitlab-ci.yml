@@ -7,3 +7,4 @@ build:
     - docker push registry.njsm.de/mt/compiler:latest
     - docker tag compiler registry.njsm.de/mt/compiler:${CI_COMMIT_SHA}
     - docker push registry.njsm.de/mt/compiler:${CI_COMMIT_SHA}
+    - sudo chown -R $(id -u):$(id -g) .
