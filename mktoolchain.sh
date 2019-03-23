@@ -3,7 +3,8 @@
 set -e
 
 # Configuration section
-LLVM_REVISION=2ffb1b0413efa9a24eb3c49e710e36f92e2cb50b
+# LLVM 8.0.0
+LLVM_REVISION=d2298e74235598f15594fe2c99bbac870a507c59
 LLVM_UPSTREAM_SOURCE=https://github.com/llvm/llvm-project.git
 
 # Helpers
