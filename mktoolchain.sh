@@ -77,6 +77,7 @@ cmake -DCMAKE_INSTALL_PREFIX="${TARGET}" \
       -DLLVM_PARALLEL_LINK_JOBS="${MAX_LINK_JOBS}" \
       -G "${CMAKE_GENERATOR}" \
       -DCMAKE_BUILD_TYPE=Release \
+      -DLLVM_BINUTILS_INCDIR=/usr/include \
       ../llvm/llvm
 $MAKE install
 cd ..
