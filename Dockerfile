@@ -12,7 +12,9 @@ RUN apt update && \
                  neovim \
                  openssh-client \
                  gdb \
-                 cmake && \
+                 cmake \
+		 libgcc-8-dev \
+		 libgcc1 && \
   mkdir -p /opt/toolchain/target
 ADD tools.tar /opt/toolchain/target
 ENV PATH=/opt/toolchain/target/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
