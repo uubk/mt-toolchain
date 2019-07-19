@@ -75,6 +75,7 @@ cd llvm-build
 cmake -DCMAKE_INSTALL_PREFIX="${TARGET}" \
       -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" \
       -DLLVM_PARALLEL_LINK_JOBS="${MAX_LINK_JOBS}" \
+      -DLLVM_ENABLE_ASSERTIONS=True \
       -G "${CMAKE_GENERATOR}" \
       -DCMAKE_BUILD_TYPE=Release \
       -DLLVM_BINUTILS_INCDIR=/usr/include \
