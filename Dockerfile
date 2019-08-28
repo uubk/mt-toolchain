@@ -16,7 +16,9 @@ RUN apt update && \
                  python3-numpy \
                  python3-virtualenv \
                  python3-venv \
-                 cmake && \
+                 cmake \
+                 libgcc-8-dev \
+                 libgcc1 && \
   mkdir -p /opt/toolchain/target
 ADD tools.tar /opt/toolchain/target
 ENV PATH=/opt/toolchain/target/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin

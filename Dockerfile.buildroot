@@ -6,5 +6,6 @@ RUN apt update && \
                  ninja-build \
                  git \
                  cmake \
-                 python
+                 python \
+		 binutils-dev
 CMD ["/bin/bash", "-c", "cd /opt/toolchain && ./mktoolchain.sh && tar -cvf tools.tar -C target ."]

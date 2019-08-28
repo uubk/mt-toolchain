@@ -3,9 +3,9 @@
 set -e
 
 # Configuration section
-# LLVM 8.0.0
-LLVM_REVISION=d2298e74235598f15594fe2c99bbac870a507c59
-LLVM_UPSTREAM_SOURCE=https://github.com/llvm/llvm-project.git
+# LLVM 9.0.0 dev
+#LLVM_REVISION=db134aaec24e8a88fdac9b5015e7af8575b5cad6
+#LLVM_UPSTREAM_SOURCE=https://github.com/llvm/llvm-project.git
 
 # Helpers
 print_build_env() {
@@ -62,21 +62,23 @@ print_build_env
 
 echo "Building LLVM"
 # LLVM
-if [ ! -d llvm ] ; then
-    git clone $LLVM_UPSTREAM_SOURCE llvm
-fi
-cd llvm
-git fetch
-git checkout $LLVM_REVISION
-cd ..
+#if [ ! -d llvm ] ; then
+#    git clone $LLVM_UPSTREAM_SOURCE llvm
+#fi
+#cd llvm
+#git fetch
+#git checkout $LLVM_REVISION
+#cd ..
 mkdir llvm-build || /bin/true
 cd llvm-build
 
 cmake -DCMAKE_INSTALL_PREFIX="${TARGET}" \
-      -DLLVM_ENABLE_PROJECTS="clang;compiler-rt" \
+      -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;libcxx;libcxxabi" \
       -DLLVM_PARALLEL_LINK_JOBS="${MAX_LINK_JOBS}" \
+      -DLLVM_ENABLE_ASSERTIONS=True \
       -G "${CMAKE_GENERATOR}" \
       -DCMAKE_BUILD_TYPE=Release \
+      -DLLVM_BINUTILS_INCDIR=/usr/include \
       ../llvm/llvm
 $MAKE install
 cd ..
