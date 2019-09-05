@@ -1,9 +1,15 @@
+image: docker:stable-git
+
+before_script:
+  - docker info
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 build:
   tags:
-    - shell
+    - docker
+    - large
   script:
     - make all
     - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
