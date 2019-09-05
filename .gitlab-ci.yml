@@ -6,7 +6,8 @@ build:
     - shell
   script:
     - make all
-    - docker tag compiler registry.njsm.de/mt/compiler:latest
-    - docker push registry.njsm.de/mt/compiler:latest
-    - docker tag compiler registry.njsm.de/mt/compiler:${CI_COMMIT_SHA}
-    - docker push registry.njsm.de/mt/compiler:${CI_COMMIT_SHA}
+    - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
+    - docker tag compiler uubk/mt-compiler:${CI_COMMIT_SHA}
+    - docker push uubk/mt-compiler:${CI_COMMIT_SHA}
+    - docker tag compiler uubk/mt-compiler:latest
+    - docker push uubk/mt-compiler:latest
