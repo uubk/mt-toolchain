@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
+      - name: Get release
+        run: echo ::set-env name=TAG::$(echo ${GITHUB_REF:10})
       - name: Build container
         run: |
           git submodule update --init --recursive
@@ -27,12 +29,11 @@ jobs:
           echo "${DOCKERHUB_TOKEN}" | docker login -u uubk --password-stdin
           docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
           docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
-          docker tag "complier:latest uubk/mt-toolchain:${TAG}"
+          docker tag complier:latest "uubk/mt-toolchain:${TAG}"
           docker push "uubk/mt-toolchain:${TAG}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          TAG: ${{ github.ref }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
