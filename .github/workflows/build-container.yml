@@ -1,0 +1,54 @@
+name: Build and create release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+env:
+  DOCKER_BUILDKIT: '1'
+
+jobs:
+  build:
+    name: Build docker container
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build container
+        run: |
+          apt update
+          apt install -y pbzip2
+          make
+          pbzip2 -7 tools.tar
+      - name: Publish container
+        run: |
+          echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u uubk --password-stdin
+          echo "${DOCKERHUB_TOKEN}" | docker login -u uubk --password-stdin
+          docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          docker tag "complier:latest uubk/mt-toolchain:${TAG}"
+          docker push "uubk/mt-toolchain:${TAG}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          TAG: ${{ github.ref }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./tools.tar.bz2
+          asset_name: compiler.tar.bz2
+          asset_content_type: application/x-tar
