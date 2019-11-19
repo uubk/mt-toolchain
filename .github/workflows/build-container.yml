@@ -16,8 +16,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build container
         run: |
-          apt update
-          apt install -y pbzip2
+          sudo apt update
+          sudo apt install -y pbzip2
           make
           pbzip2 -7 tools.tar
       - name: Publish container
