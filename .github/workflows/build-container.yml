@@ -27,10 +27,12 @@ jobs:
         run: |
           echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u uubk --password-stdin
           echo "${DOCKERHUB_TOKEN}" | docker login -u uubk --password-stdin
-          docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
-          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          #docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          #docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
           docker tag complier:latest "uubk/mt-toolchain:${TAG}"
           docker push "uubk/mt-toolchain:${TAG}"
+          docker tag complier:latest "uubk/mt-toolchain:latest"
+          docker push "uubk/mt-toolchain:latest"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
