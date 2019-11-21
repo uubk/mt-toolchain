@@ -23,18 +23,14 @@ jobs:
           sudo apt install -y pbzip2
           make
           pbzip2 -7 tools.tar
-      - name: Publish container
+      - name: Publish container to Dockerhub
         run: |
-          echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u uubk --password-stdin
           echo "${DOCKERHUB_TOKEN}" | docker login -u uubk --password-stdin
-          #docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
-          #docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
-          docker tag complier:latest "uubk/mt-toolchain:${TAG}"
+          docker tag compiler:latest "uubk/mt-toolchain:${TAG}"
           docker push "uubk/mt-toolchain:${TAG}"
-          docker tag complier:latest "uubk/mt-toolchain:latest"
+          docker tag compiler:latest "uubk/mt-toolchain:latest"
           docker push "uubk/mt-toolchain:latest"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Release
         id: create_release
@@ -56,3 +52,11 @@ jobs:
           asset_path: ./tools.tar.bz2
           asset_name: compiler.tar.bz2
           asset_content_type: application/x-tar
+      - name: Publish container to GitHub
+        run: |
+          echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u uubk --password-stdin
+          docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
