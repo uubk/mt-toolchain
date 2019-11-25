@@ -26,59 +26,35 @@ jobs:
       - name: Publish container to Dockerhub
         run: |
           echo "${DOCKERHUB_TOKEN}" | docker login -u uubk --password-stdin
+          echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u uubk --password-stdin
           docker tag compiler:latest "uubk/mt-toolchain:${TAG}"
           docker push "uubk/mt-toolchain:${TAG}"
           docker tag compiler:latest "uubk/mt-toolchain:latest"
           docker push "uubk/mt-toolchain:latest"
+          docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
+          docker tag compiler:latest "docker.pkg.github.com/uubk/mt-toolchain/toolchain:latest"
+          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:latest"
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_MANUAL_TOKEN }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Upload build output
-        uses: actions/upload-artifact@v1
-        with:
-          name: tools.tar.bz2
-          path: tools.tar.bz2
-  push:
-    name: Publish artifacts on GitHub
-    runs-on: ubuntu-18.04
-    needs: build
-    steps:
-      - name: Get release
-        run: echo ::set-env name=TAG::$(echo ${GITHUB_REF:10})
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_MANUAL_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Download build output
-        uses: actions/download-artifact@v1
-        with:
-          name: tools.tar.bz2
-          path: tools.tar.bz2
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_MANUAL_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./tools.tar.bz2
           asset_name: compiler.tar.bz2
           asset_content_type: application/x-tar
-      - name: Publish container to GitHub
-        run: |
-          echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u uubk --password-stdin
-          echo "${DOCKERHUB_TOKEN}" | docker login -u uubk --password-stdin
-          docker pull "uubk/mt-toolchain:${TAG}"
-          docker pull "uubk/mt-toolchain:latest"
-          docker tag "uubk/mt-toolchain:${TAG}" "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
-          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:${TAG}"
-          docker tag "uubk/mt-toolchain:latest" "docker.pkg.github.com/uubk/mt-toolchain/toolchain:latest"
-          docker push "docker.pkg.github.com/uubk/mt-toolchain/toolchain:latest"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
