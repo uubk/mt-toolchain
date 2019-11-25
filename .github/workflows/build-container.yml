@@ -40,6 +40,7 @@ jobs:
   push:
     name: Publish artifacts on GitHub
     runs-on: ubuntu-18.04
+    needs: build
     steps:
       - name: Get release
         run: echo ::set-env name=TAG::$(echo ${GITHUB_REF:10})
